@@ -1,8 +1,12 @@
 <div class="jumbotron center">
 	<h1>Philly Folks</h1>
 		<h3> Tell your neighborhood story </h3><br/>
-		<p>
-			<%= link_to "Log in", "#", class: "btn btn-default btn-lg" %>
-			<%= link_to "Sign up", "#", class: "btn btn-primary btn-lg" %>
-		</p>
+		<% if user_signed_in? %>
+			<p> Welcome!  Add photos and stories to your neighborhood map </p>
+		<% else %>
+			<p>
+				<%= link_to "Log in", new_user_session_path, class: "btn btn-default btn-lg" %>
+				<%= link_to "Sign up", new_user_registration_path, class: "btn btn-primary btn-lg" %>
+			</p>
+		<% end %>
 </div>
