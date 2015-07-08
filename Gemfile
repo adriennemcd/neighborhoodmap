@@ -12,6 +12,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'gmaps4rails'
 gem 'bootstrap-sass'
 gem 'devise', '~> 3.4.0'
+gem 'geocoder'
+gem 'underscore-rails', '~> 1.8.3'
 
 group :development, :test do
   gem 'byebug'
