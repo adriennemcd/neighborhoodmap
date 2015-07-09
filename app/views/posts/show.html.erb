@@ -22,12 +22,18 @@
   <strong>Longitude:</strong>
   <%= @post.longitude %>
 </p>
-
-<%= javascript_include_tag "postView" %>
-<%= gmaps4rails(@json) %>
-<div style='width: 800px; background-color: white'>
-  <div id="map" style='width: 800px; height: 400px;'></div>
+<div style='width: 70%; background-color: white'>
+  <div id="map" style='width: 100%; height: 400px;'></div>
 </div>
+
+<script type="text/javascript">
+handler = Gmaps.build('Google');
+handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+  markers = handler.addMarkers(<%= raw @hash.to_json %>);
+  handler.bounds.extendWith(markers);
+  handler.fitMapToBounds();
+});
+</script>
 
 <h3>Nearby posts</h3>
 <ul>
