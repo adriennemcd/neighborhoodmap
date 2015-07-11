@@ -1,3 +1,85 @@
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="content-type=" content="text/html; charset=UTF-8" />
+<title>Heat Map with Google Maps API</title>
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+<script src="http://alasql.org/console/alasql.min.js"></script>
+<link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?libraries=geometry&sensor=false&language=en"></script>
+
+<style>
+    .map_canvas
+    {
+        width: 500px;
+        height: 500px;
+    }
+</style>
+
+<script type="text/javascript">
+    var map;
+    var iniLat = 39.97;
+    var iniLng = -75.15;
+    var iniZoom = 13;
+
+    // variable to create marker
+    var marker;
+
+    // create marker lat and long
+    var latitude;
+    var longitude;
+
+    var infowindow = new google.maps.InfoWindow();
+
+    google.maps.visualRefresh = true;
+
+    function initialize() {
+        var lat = iniLat;
+        var lon = iniLng;
+        var myLatlng = new google.maps.LatLng(lat, lon);
+        var mapOptions = {
+            zoom: iniZoom, center: myLatlng, mapTypeId: google.maps.MapTypeId.ROADMAP,
+            minZoom: 2
+        }
+        map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+        google.maps.event.addListener(map, "click", function (event) {
+            latitude = event.latLng.lat();
+            longitude = event.latLng.lng();
+            console.log( latitude + ', ' + longitude );
+            // Center map on new marker and get its lat long
+            map.panTo(new google.maps.LatLng(latitude,longitude));
+            map.setCenter(new google.maps.LatLng(latitude,longitude));
+            var markerPos = map.getCenter();
+            marker = new google.maps.Marker({
+                position: markerPos
+            });
+            marker.setMap(map); 
+            stopEdit();    
+            alert(latitude + ", " + longitude);  
+            $(document).ready(function(){
+              $("#latitude").val(latitude);
+            });   
+            $(document).ready(function(){
+              $("#longitude").val(longitude);
+            }); 
+        }); //end addListener
+    }
+
+    function stopEdit() {
+        google.maps.event.clearListeners(map, "click");
+    }
+
+    function getCenter() {
+        var c = map.getCenter();
+        return ({ "latitude": c.lat(), "longitude": c.lng() });
+    } // from Google Maps: Power Tools for Maximizing the API” Simple GIS tutorial
+
+    function setCenter(lat, lon) {
+        map.setCenter(new google.maps.LatLng(lat, lon));
+    } // from Google Maps: Power Tools for Maximizing the API” Simple GIS tutorial  
+
+    var lati= "test"
+      
+</script>
+<body onload="initialize();">
 <%= form_for(@post) do |f| %>
   <% if @post.errors.any? %>
     <div id="error_explanation">
@@ -12,6 +94,10 @@
   <% end %>
 
   <div class="field">
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+  </div>
+  <div class="field">
     <%= f.label :description %><br>
     <%= f.text_field :description %>
   </div>
@@ -21,13 +107,16 @@
   </div>
   <div class="field">
     <%= f.label :latitude %><br>
-    <%= f.text_field :latitude %>
+    <%= f.text_field :latitude, :id=>"latitude"%>
   </div>
   <div class="field">
     <%= f.label :longitude %><br>
-    <%= f.text_field :longitude %>
+    <%= f.text_field :longitude, :id=>"longitude" %>
   </div>
+  <div id="map_canvas" style="width: 500px; height: 500px">
+  </div> 
   <div class="actions">
     <%= f.submit %>
   </div>
 <% end %>
+</body>
