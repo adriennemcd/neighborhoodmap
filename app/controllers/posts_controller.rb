@@ -8,7 +8,11 @@ class PostsController < ApplicationController
     @hash = Gmaps4rails.build_markers(@posts) do |post, marker|
       marker.lat post.latitude
       marker.lng post.longitude
-      marker.infowindow post.description
+      marker.infowindow render_to_string(:partial => "info", :locals => { :post => post }) 
+      marker.json({
+      title:     post.title,
+      description: post.description
+    })
     end
   end
 

@@ -79,7 +79,6 @@
     var lati= "test"
       
 </script>
-<body onload="initialize();">
 <%= form_for(@post) do |f| %>
   <% if @post.errors.any? %>
     <div id="error_explanation">
@@ -95,28 +94,27 @@
 
   <div class="field">
     <%= f.label :title %><br>
-    <%= f.text_field :title %>
+    <%= f.text_field :title, :required => true %>
   </div>
   <div class="field">
     <%= f.label :description %><br>
-    <%= f.text_field :description %>
+    <%= f.text_area :description, :rows => "10", :required => true %>
   </div>
   <div class="field">
-    <%= f.label :address %><br>
-    <%= f.text_field :address %>
+    <%= f.hidden_field :latitude, :id=>"latitude", :required => true%>
   </div>
   <div class="field">
-    <%= f.label :latitude %><br>
-    <%= f.text_field :latitude, :id=>"latitude"%>
+    <%= f.label "Location" %>
+    <%= f.hidden_field :longitude, :id=>"longitude", :required => true %>
   </div>
   <div class="field">
-    <%= f.label :longitude %><br>
-    <%= f.text_field :longitude, :id=>"longitude" %>
+
   </div>
+  <p>Click the map to add a marker</p>
   <div id="map_canvas" style="width: 500px; height: 500px">
   </div> 
+  <script>initialize();</script>
   <div class="actions">
     <%= f.submit %>
   </div>
 <% end %>
-</body>
