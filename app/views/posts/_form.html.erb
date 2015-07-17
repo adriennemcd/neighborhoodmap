@@ -92,20 +92,20 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="form-group">
     <%= f.label :title %><br>
-    <%= f.text_field :title, :required => true %>
+    <%= f.text_field :title, :required => true, class: "form-control" %>
   </div>
-  <div class="field">
+  <div class="form-group">
     <%= f.label :description %><br>
-    <%= f.text_area :description, :rows => "10", :required => true %>
+    <%= f.text_area :description, :rows => "10", :required => true, class: "form-control" %>
   </div>
-  <div class="field">
-    <%= f.hidden_field :latitude, :id=>"latitude", :required => true%>
+  <div class="form-group">
+    <%= f.hidden_field :latitude, :id=>"latitude", :required => true, class: "form-control" %>
   </div>
-  <div class="field">
+  <div class="form-group">
     <%= f.label "Location" %>
-    <%= f.hidden_field :longitude, :id=>"longitude", :required => true %>
+    <%= f.hidden_field :longitude, :id=>"longitude", :required => true, class: "form-control" %>
   </div>
   <div class="field">
 
@@ -115,6 +115,6 @@
   </div> 
   <script>initialize();</script>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit class: "btn btn-primary" %>
   </div>
 <% end %>

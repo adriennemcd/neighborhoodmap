@@ -5,34 +5,35 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
-var raw_markers   = <%=raw @hash.to_json %>;
-var gmaps_markers;
+  var raw_markers   = <%=raw @hash.to_json %>;
+  var gmaps_markers;
 
-function createSidebarLi(post_json) {
-  return ("<li><a>" + post_json.title + " - " + post_json.description + "<\/a></li>");
-};
+  function createSidebarLi(post_json) {
+    return ("<li><a>" + post_json.title + " - " + post_json.description + "<\/a></li>");
+  };
 
-function bindLiToMarker($li, marker){
-  $li.click(function(){
-    marker.panTo(); //to pan to the marker
-    google.maps.event.trigger(marker.getServiceObject(), "click"); // to open infowindow
+  function bindLiToMarker($li, marker){
+    $li.click(function(){
+      marker.panTo(); //to pan to the marker
+      google.maps.event.trigger(marker.getServiceObject(), "click"); // to open infowindow
+    });
+  };
+
+  function createSidebar(){
+    for (var i=0;i<raw_markers.length;i++){
+      var $li = $( createSidebarLi(raw_markers[i]) );
+      $li.appendTo($('#markers_list'));
+      bindLiToMarker($li, gmaps_markers[i]);
+    }
+  };
+
+  handler = Gmaps.build('Google');
+  handler.buildMap({ provider: {zoom: 13}, internal: {id: 'map'}}, function(){
+    gmaps_markers = handler.addMarkers(raw_markers);
+    handler.bounds.extendWith(gmaps_markers);
+    handler.fitMapToBounds();
+    createSidebar();
   });
-};
-
-function createSidebar(){
-  for (var i=0;i<raw_markers.length;i++){
-    var $li = $( createSidebarLi(raw_markers[i]) );
-    $li.appendTo($('#markers_list'));
-    bindLiToMarker($li, gmaps_markers[i]);
-  }
-};
-
-handler = Gmaps.build('Google');
-handler.buildMap({ provider: {zoom: 13}, internal: {id: 'map'}}, function(){
-  gmaps_markers = handler.addMarkers(raw_markers);
-  handler.map.centerOn({ lat: 39.97, lng: -75.15 });
-  createSidebar();
-});
 });
 
 onload=function(){
@@ -51,6 +52,7 @@ onload=function(){
     <tr>
       <th>Title</th>
       <th>Description</th>
+      <th>User ID</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -60,9 +62,12 @@ onload=function(){
       <tr>
         <td><%= post.title %></td>       
         <td><%= post.description %></td>
+        <td><%= post.user.email if post.user %></td>
         <td><%= link_to 'Show', post %></td>
-        <td><%= link_to 'Edit', edit_post_path(post) %></td>
-        <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if post.user == current_user %>
+          <td><%= link_to 'Edit', edit_post_path(post) %></td>
+          <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
@@ -70,7 +75,9 @@ onload=function(){
 
 <br>
 
-<%= link_to 'New Post', new_post_path %>
+<% if user_signed_in? %>
+  <%= link_to 'New Post', new_post_path %>
+<% end %>
 
 <div id="map" style='width: 800px; height: 400px; background-color: white;'></div>
 <script>initialize();</script>
