@@ -79,7 +79,7 @@
     var lati= "test"
       
 </script>
-<%= form_for(@post) do |f| %>
+<%= form_for @post, html: { multipart: true } do |f| %>
   <% if @post.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
@@ -99,6 +99,10 @@
   <div class="form-group">
     <%= f.label :description %><br>
     <%= f.text_area :description, :rows => "10", :required => true, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :image %><br>
+    <%= f.file_field :image, class: "form-control" %>
   </div>
   <div class="form-group">
     <%= f.hidden_field :latitude, :id=>"latitude", :required => true, class: "form-control" %>

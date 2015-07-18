@@ -11,7 +11,8 @@ class PostsController < ApplicationController
       marker.infowindow render_to_string(:partial => "info", :locals => { :post => post }) 
       marker.json({
       title:     post.title,
-      description: post.description
+      description: post.description,
+      image: post.image.url(:thumb)
     })
     end
   end
@@ -77,6 +78,6 @@ class PostsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      params.require(:post).permit(:title, :description, :address, :latitude, :longitude)
+      params.require(:post).permit(:title, :description, :image, :address, :latitude, :longitude)
     end
 end

@@ -9,7 +9,7 @@ $(document).ready(function(){
   var gmaps_markers;
 
   function createSidebarLi(post_json) {
-    return ("<li><a>" + post_json.title + " - " + post_json.description + "<\/a></li>");
+    return ("<li><a>" + post_json.title + " <\/a><br /> " + post_json.image + "</li>");
   };
 
   function bindLiToMarker($li, marker){
@@ -51,8 +51,9 @@ onload=function(){
   <thead>
     <tr>
       <th>Title</th>
+      <th>Image</th>
       <th>Description</th>
-      <th>User ID</th>
+      <th>User</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -60,7 +61,8 @@ onload=function(){
   <tbody>
     <% @posts.each do |post| %>
       <tr>
-        <td><%= post.title %></td>       
+        <td><%= post.title %></td>  
+        <td><%= image_tag post.image.url(:medium) %></td>     
         <td><%= post.description %></td>
         <td><%= post.user.email if post.user %></td>
         <td><%= link_to 'Show', post %></td>

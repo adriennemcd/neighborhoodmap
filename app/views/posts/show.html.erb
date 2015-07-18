@@ -12,12 +12,12 @@ function initialize() {
 }
 </script>
 
-<p id="notice"><%= notice %></p>
-
 <p>
   <strong>Title:</strong>
   <%= @post.title %>
 </p>
+
+<%= image_tag @post.image.url(:large) %>
 
 <p>
   <strong>Description:</strong>
