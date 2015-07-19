@@ -28,7 +28,7 @@ function initialize() {
 				</div>
 				<script>initialize();</script>
 
-				<% if @post.user == current_user %>
+				<% if current_user && @post.user == current_user %>
 					<%= link_to edit_post_path(@post) do %>
 				        <span class="glyphicon glyphicon-edit"></span>
 				        Edit
