@@ -36,26 +36,21 @@ $(document).ready(function(){
   });
 });
 
-onload=function(){
-  var e=document.getElementById("refreshed");
-  if(e.value=="no")e.value="yes";
-  else{e.value="no";location.reload();}
-}
-
 </script>
 <input type="hidden" id="refreshed" value="no">
 
-<div id="posts" class="transitions-enabled">
+<div class="posts transitions-enabled">
   <% @posts.each do |post| %>
     <div class="box panel panel-default"> 
-      <%= image_tag post.image.url(:medium) %> 
+      <%= link_to image_tag(post.image.url(:medium)), post %>
       <div class="panel-body">    
-        <%= post.description %>
-        <%= post.user.email if post.user %>
-        <%= link_to 'Show', post %>
+        <%= post.description %><br />
+        <strong><%= post.user.email if post.user %></strong>
         <% if post.user == current_user %>
-          <%= link_to 'Edit', edit_post_path(post) %>
-          <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %>
+          <div class="actions">
+            <%= link_to 'Edit', edit_post_path(post) %>
+            <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %>
+          </div>
         <% end %>
       </div>
     </div>

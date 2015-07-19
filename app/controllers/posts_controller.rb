@@ -4,8 +4,9 @@ class PostsController < ApplicationController
   before_action :correct_user, only: [:edit, :update, :destroy]
 
   def index
-    @posts = Post.all
-    @hash = Gmaps4rails.build_markers(@posts) do |post, marker|
+    @posts = Post.all.order("created_at DESC").limit(5)
+    @posts2 = Post.all
+    @hash = Gmaps4rails.build_markers(@posts2) do |post, marker|
       marker.lat post.latitude
       marker.lng post.longitude
       marker.infowindow render_to_string(:partial => "info", :locals => { :post => post }) 
