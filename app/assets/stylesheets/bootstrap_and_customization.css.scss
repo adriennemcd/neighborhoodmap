@@ -6,6 +6,7 @@ $navbar-default-link-hover-color: #575b5c;
 $brand-primary: #f1c40f;
 $jumbotron-bg: #fff;
 
+@import "bootstrap-sprockets";
 @import 'bootstrap';
 
 .center {
