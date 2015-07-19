@@ -21,7 +21,7 @@ function initialize() {
 			</div>
 			<div class="show panel-body">
 				<p><%= @post.description %></p>
-				<p><strong><%= @post.user.email if @post.user %></strong></p>
+				<p><strong><%= @post.user.user_name if @post.user %></strong></p>
 				<input type="button" class="button" value="Show on map" onclick="initialize()";>
 				<div style='width: 70%; background-color: white'>
 				  <div id="mapShow" class="show" style='width: 100%; height: 400px;'></div>
