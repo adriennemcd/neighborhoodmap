@@ -5,34 +5,11 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
-  var raw_markers   = <%=raw @hash.to_json %>;
-  var gmaps_markers;
-
-  function createSidebarLi(post_json) {
-    return ("<li><a>" + post_json.title + " <\/a><br /> " + post_json.image + "</li>");
-  };
-
-  function bindLiToMarker($li, marker){
-    $li.click(function(){
-      marker.panTo(); //to pan to the marker
-      google.maps.event.trigger(marker.getServiceObject(), "click"); // to open infowindow
-    });
-  };
-
-  function createSidebar(){
-    for (var i=0;i<raw_markers.length;i++){
-      var $li = $( createSidebarLi(raw_markers[i]) );
-      $li.appendTo($('#markers_list'));
-      bindLiToMarker($li, gmaps_markers[i]);
-    }
-  };
-
   handler = Gmaps.build('Google');
-  handler.buildMap({ provider: {zoom: 13}, internal: {id: 'map'}}, function(){
-    gmaps_markers = handler.addMarkers(raw_markers);
-    handler.bounds.extendWith(gmaps_markers);
+  handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+    markers = handler.addMarkers(<%= raw @hash.to_json %>);
+    handler.bounds.extendWith(markers);
     handler.fitMapToBounds();
-    createSidebar();
   });
 });
 
@@ -40,7 +17,12 @@ $(document).ready(function(){
 <input type="hidden" id="refreshed" value="no">
 
 <%= render 'pages/home' unless user_signed_in? %>
+<div class="panel panel-default">
+<div id="map" class="center" style='width: 100%; height: 400px; background-color: white;'></div>
+</div>
 
+<br />
+<h4>Recent Posts on the Map</h4>
 <div class="posts transitions-enabled">
   <% @posts.each do |post| %>
     <div class="box panel panel-default"> 
@@ -65,12 +47,6 @@ $(document).ready(function(){
   <% end %>
 </div>
 
-<div id="map" style='width: 800px; height: 400px; background-color: white;'></div>
-<script>initialize();</script>
-
-<div id="markers_list" style="width: 400px; height: 400px; background-color: white;">
-
-</div>
 
 
 
