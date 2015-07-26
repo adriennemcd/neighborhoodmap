@@ -75,7 +75,16 @@
         map.setCenter(new google.maps.LatLng(lat, lon));
     } // from Google Maps: Power Tools for Maximizing the API” Simple GIS tutorial  
 
-    var lati= "test"
+    function tryAgain() {
+      marker.setMap(null);
+      $(document).ready(function(){
+              $("#latitude").val(iniLat);
+            });   
+            $(document).ready(function(){
+              $("#longitude").val(iniLng);
+            });
+      initialize();
+    }
       
 </script>
 <%= form_for @post, html: { multipart: true } do |f| %>
@@ -92,11 +101,11 @@
   <% end %>
 
   <div class="form-group">
-    <%= f.label :title %><br>
-    <%= f.text_field :title, :required => true, class: "form-control" %>
+    <%= f.label "Pick a Question" %><br>
+    <%= f.collection_select(:question_id, Question.all, :id, :description, :required => true, class: "form-control") %>
   </div>
   <div class="form-group">
-    <%= f.label :description %><br>
+    <%= f.label "Answer" %><br>
     <%= f.text_area :description, :rows => "10", :required => true, class: "form-control" %>
   </div>
   <div class="form-group">
@@ -110,13 +119,12 @@
     <%= f.label "Location" %>
     <%= f.hidden_field :longitude, :id=>"longitude", :required => true, class: "form-control" %>
   </div>
-  <div class="field">
 
-  </div>
   <p>Click the map to add a marker</p>
   <div id="map_canvas" style="width: 500px; height: 500px">
   </div> 
   <script>initialize();</script>
+  <input type="button" value="Try again" onClick="tryAgain()">
   <div class="actions">
     <%= f.submit class: "btn btn-primary" %>
   </div>

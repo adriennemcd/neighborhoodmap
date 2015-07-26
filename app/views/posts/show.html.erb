@@ -20,6 +20,7 @@ function initialize() {
 				<%= image_tag @post.image.url(:large) %>
 			</div>
 			<div class="show panel-body">
+				<p><strong><%= @post.question.description %></strong></p>
 				<p><%= @post.description %></p>
 				<p><strong><%= @post.user.user_name if @post.user %></strong></p>
 				<input type="button" class="button" value="Show on map" onclick="initialize()";>
