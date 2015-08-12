@@ -9,13 +9,22 @@ class PostsController < ApplicationController
     @hash = Gmaps4rails.build_markers(@posts2) do |post, marker|
       marker.lat post.latitude
       marker.lng post.longitude
-      marker.infowindow render_to_string(:partial => "info", :locals => { :post => post }) 
+      marker.title post.id.to_s
       marker.json({
       title:     post.title,
+      question: post.question.description,
       description: post.description,
-      image: post.image.url(:thumb)
+      image: post.image.url(:thumb),
+      id: post.id
     })
     end
+    @postFilter1 = Post.all.by_question1
+    @postFilter2 = Post.all.by_question2
+    @postFilter3 = Post.all.by_question3
+    @postFilter4 = Post.all.by_question4
+    @postFilter5 = Post.all.by_question5
+    @postFilter6 = Post.all.by_question6
+    @postFilter7 = Post.all.by_question7
   end
 
   def show

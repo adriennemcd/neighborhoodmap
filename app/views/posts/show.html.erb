@@ -10,6 +10,12 @@ function initialize() {
 	  handler.fitMapToBounds();
 	});
 }
+
+function startMap() {
+	document.getElementById('mapShow').style.display="block";
+	initialize();
+}
+
 </script>
 <%= link_to 'Back', posts_path %>
 
@@ -23,17 +29,16 @@ function initialize() {
 				<p><strong><%= @post.question.description %></strong></p>
 				<p><%= @post.description %></p>
 				<p><strong><%= @post.user.user_name if @post.user %></strong></p>
-				<input type="button" class="button" value="Show on map" onclick="initialize()";>
-				<div style='width: 70%; background-color: white'>
-				  <div id="mapShow" class="show" style='width: 100%; height: 400px;'></div>
+				<input type="button" class="btn btn-primary btn-xs" style="margin-bottom: 5px;" value="Show on map" onclick="startMap()">
+				<div class="center" style='width: 100%; background-color: white; margin: 0 auto;'>
+					<div id="mapShow" style='width: 100%; height: 400px; display: none;'></div>
 				</div>
-				<script>initialize();</script>
-
+				<br />
 				<% if current_user && @post.user == current_user %>
 					<%= link_to edit_post_path(@post) do %>
-				        <span class="glyphicon glyphicon-edit"></span>
-				        Edit
-			      	<% end %>
+			        	<span class="glyphicon glyphicon-edit"></span>
+			        	Edit
+		      		<% end %>
 				<% end %>
 			</div>
 		</div>
