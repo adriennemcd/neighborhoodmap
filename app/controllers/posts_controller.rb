@@ -4,25 +4,35 @@ class PostsController < ApplicationController
   before_action :correct_user, only: [:edit, :update, :destroy]
 
   def index
-    @posts = Post.all.order("created_at DESC").limit(10)
-    @posts2 = Post.all
-    @hash = Gmaps4rails.build_markers(@posts2) do |post, marker|
-      marker.lat post.latitude
-      marker.lng post.longitude
-      marker.title post.id.to_s
-      marker.json({
-      title:     post.title,
-      question: post.question.description,
-      description: post.description,
-      image: post.image.url(:thumb),
-      id: post.id
-    })
-    end
-    @postFilter = Post.all.by_question
+    @posts = Post.all
     if params[:search]
       @postFilt = Post.search(params[:search]).order("created_at DESC")
+      @hash = Gmaps4rails.build_markers(@postFilt) do |post, marker|
+        marker.lat post.latitude
+        marker.lng post.longitude
+        marker.title post.id.to_s
+        marker.json({
+        title:     post.title,
+        question: post.question.description,
+        description: post.description,
+        image: post.image.url(:thumb),
+        id: post.id
+        })
+      end
     else
       @postFilt = Post.all.order('created_at DESC')
+      @hash = Gmaps4rails.build_markers(@postFilt) do |post, marker|
+        marker.lat post.latitude
+        marker.lng post.longitude
+        marker.title post.id.to_s
+        marker.json({
+        title:     post.title,
+        question: post.question.description,
+        description: post.description,
+        image: post.image.url(:thumb),
+        id: post.id
+        })
+      end
     end
   end
 

@@ -51,7 +51,6 @@ function filterQ(selected_Q) {
     <%= submit_tag "Search", :name => nil %>
   <% end %>
   <%= select('post','question_id', Question.all.collect {|q|[q.id] }, {include_blank: 'None'}, :onchange => "filterQ(this.value)") %><br />
-
 </div>
 <div id="search-form" class="posts transitions-enabled">
   <% @postFilt.each do |post| %>
