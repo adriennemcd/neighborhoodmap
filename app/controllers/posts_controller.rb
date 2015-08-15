@@ -18,13 +18,17 @@ class PostsController < ApplicationController
       id: post.id
     })
     end
-    @postFilter1 = Post.all.by_question1
-    @postFilter2 = Post.all.by_question2
-    @postFilter3 = Post.all.by_question3
-    @postFilter4 = Post.all.by_question4
-    @postFilter5 = Post.all.by_question5
-    @postFilter6 = Post.all.by_question6
-    @postFilter7 = Post.all.by_question7
+    @postFilter = Post.all.by_question
+    if params[:search]
+      @postFilt = Post.search(params[:search]).order("created_at DESC")
+    else
+      @postFilt = Post.all.order('created_at DESC')
+    end
+  end
+
+  def sort
+    @post = Post.relationships.build(:question_id => params[:id])
+    render(:partial => "info", :locals => { :post => post }) 
   end
 
   def show
