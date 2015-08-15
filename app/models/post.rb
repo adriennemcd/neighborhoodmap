@@ -7,7 +7,7 @@ class Post < ActiveRecord::Base
 	scope :by_question, -> {where(question_id: '3') }
 	def self.search(search)
 		if search
-			where('question_id LIKE ?', "%#{search}%")
+			where('cast(question_id as text) LIKE ?', "%#{search}%")
 		else
 			all
 		end
