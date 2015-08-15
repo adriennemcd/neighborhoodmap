@@ -47,10 +47,9 @@ function filterQ(selected_Q) {
 <div id="posturl" style="width: 100%; height: 100px; background-color:white;">
   <h5>Filter the Markers by Question</h5>
   <%= form_tag(posts_path, :method => 'get', id: "search-form") do %>
-    <%= text_field_tag :search, params[:search], placeholder: "Search Posts" %>
-    <%= submit_tag "Search", :name => nil %>
+    <%= select_tag(:search, options_for_select(@question_options)) %>
+    <%= submit_tag "Filter", :name => nil %>
   <% end %>
-  <%= select('post','question_id', Question.all.collect {|q|[q.id] }, {include_blank: 'None'}, :onchange => "filterQ(this.value)") %><br />
 </div>
 <div id="search-form" class="posts transitions-enabled">
   <% @postFilt.each do |post| %>

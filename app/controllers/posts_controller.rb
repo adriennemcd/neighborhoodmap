@@ -5,6 +5,7 @@ class PostsController < ApplicationController
 
   def index
     @posts = Post.all
+    @question_options = Question.all.map{|q| [ q.description, q.id] }
     if params[:search]
       @postFilt = Post.search(params[:search]).order("created_at DESC")
       @hash = Gmaps4rails.build_markers(@postFilt) do |post, marker|
