@@ -60,6 +60,11 @@
               $("#longitude").val(longitude);
             }); 
         }); //end addListener
+        var centerControlDiv = document.createElement('div');
+        var centerControl = new CenterControl(centerControlDiv, map);
+
+        centerControlDiv.index = 1;
+        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
     }
 
     function stopEdit() {
@@ -85,47 +90,85 @@
             });
       initialize();
     }
-      
-</script>
-<%= form_for @post, html: { multipart: true } do |f| %>
-  <% if @post.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
 
-      <ul>
-      <% @post.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+    function CenterControl(controlDiv, map) {
+
+      // Set CSS for the control border.
+      var controlUI = document.createElement('div');
+      controlUI.style.backgroundColor = '#fff';
+      controlUI.style.border = '2px solid #fff';
+      controlUI.style.borderRadius = '3px';
+      controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+      controlUI.style.cursor = 'pointer';
+      controlUI.style.marginBottom = '22px';
+      controlUI.style.textAlign = 'center';
+      controlUI.title = 'Click to remove marker';
+      controlDiv.appendChild(controlUI);
+
+      // Set CSS for the control interior.
+      var controlText = document.createElement('div');
+      controlText.style.color = 'rgb(25,25,25)';
+      controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+      controlText.style.fontSize = '11px';
+      controlText.style.lineHeight = '38px';
+      controlText.style.paddingLeft = '5px';
+      controlText.style.paddingRight = '5px';
+      controlText.innerHTML = 'Remove marker & try again';
+      controlUI.appendChild(controlText);
+
+      // Setup the click event listeners: simply set the map to Chicago.
+      controlUI.addEventListener('click', function() {
+        tryAgain();
+      });
+
+    }
+</script> 
+<div class="col-md-offset-2 col-md-8">
+    <div class="panel panel-default">
+      <%= form_for @post, html: { multipart: true } do |f| %>
+        <div class="panel-heading">
+          <h2>New Post</h2>
+          <% if @post.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+              <ul>
+              <% @post.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+              </ul>
+            </div>
+          <% end %>
+        </div>
+        <div class="show panel-body">
+          <div class="form-group">
+            <%= f.label "Pick a Question" %><br>
+            <%= f.collection_select(:question_id, Question.all, :id, :description, :required => true, class: "form-control") %>
+          </div>
+          <div class="form-group">
+            <%= f.label "Answer" %><br>
+            <%= f.text_area :description, :rows => "10", :required => true, class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= f.label :image %><br>
+            <%= f.file_field :image, class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= f.hidden_field :latitude, :id=>"latitude", :required => true, class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <%= f.label "Location" %>
+            <%= f.hidden_field :longitude, :id=>"longitude", :required => true, class: "form-control" %>
+          </div>
+
+          <p>Click the map to add a marker</p>
+          <div id="map_canvas" style="width: 100%; height: 500px">
+            <input type="button" class="mapButton" value="Try again" onClick="tryAgain()">
+          </div> 
+          <script>initialize();</script><br />
+          <div class="actions">
+            <%= f.submit class: "btn btn-primary" %>
+          </div>
+        </div>
       <% end %>
-      </ul>
     </div>
-  <% end %>
-
-  <div class="form-group">
-    <%= f.label "Pick a Question" %><br>
-    <%= f.collection_select(:question_id, Question.all, :id, :description, :required => true, class: "form-control") %>
   </div>
-  <div class="form-group">
-    <%= f.label "Answer" %><br>
-    <%= f.text_area :description, :rows => "10", :required => true, class: "form-control" %>
-  </div>
-  <div class="form-group">
-    <%= f.label :image %><br>
-    <%= f.file_field :image, class: "form-control" %>
-  </div>
-  <div class="form-group">
-    <%= f.hidden_field :latitude, :id=>"latitude", :required => true, class: "form-control" %>
-  </div>
-  <div class="form-group">
-    <%= f.label "Location" %>
-    <%= f.hidden_field :longitude, :id=>"longitude", :required => true, class: "form-control" %>
-  </div>
-
-  <p>Click the map to add a marker</p>
-  <div id="map_canvas" style="width: 500px; height: 500px">
-  </div> 
-  <script>initialize();</script>
-  <input type="button" value="Try again" onClick="tryAgain()">
-  <div class="actions">
-    <%= f.submit class: "btn btn-primary" %>
-  </div>
-<% end %>

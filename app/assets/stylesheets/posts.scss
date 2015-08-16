@@ -12,5 +12,16 @@
 }
 
 .box img {
-	width: 100%;
+	width: 100%; 
+}
+
+#posturl {
+	padding: 5px 10px 10px 10px;
+}
+
+.mapButton {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	z-index: 101;
 }

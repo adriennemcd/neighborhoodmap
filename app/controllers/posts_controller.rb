@@ -8,10 +8,11 @@ class PostsController < ApplicationController
     @question_options = Question.all.map{|q| [ q.description, q.id] }
     if params[:search]
       @postFilt = Post.search(params[:search]).order("created_at DESC")
+      @postTitle = Post.search(params[:search]).first
       @hash = Gmaps4rails.build_markers(@postFilt) do |post, marker|
         marker.lat post.latitude
         marker.lng post.longitude
-        marker.title post.id.to_s
+        marker.infowindow render_to_string(:partial => "info", :locals => { :post => post })
         marker.json({
         title:     post.title,
         question: post.question.description,
@@ -25,7 +26,7 @@ class PostsController < ApplicationController
       @hash = Gmaps4rails.build_markers(@postFilt) do |post, marker|
         marker.lat post.latitude
         marker.lng post.longitude
-        marker.title post.id.to_s
+        marker.infowindow render_to_string(:partial => "info", :locals => { :post => post })
         marker.json({
         title:     post.title,
         question: post.question.description,
@@ -37,9 +38,8 @@ class PostsController < ApplicationController
     end
   end
 
-  def sort
-    @post = Post.relationships.build(:question_id => params[:id])
-    render(:partial => "info", :locals => { :post => post }) 
+  def info
+    @base = "localhost:3000/posts"
   end
 
   def show

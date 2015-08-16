@@ -15,23 +15,6 @@ function initialize() {
     
   });
 };
-
-function filter( oSelect ) {
-  var selectedValue = oSelect.options[ oSelect.selectedIndex ].value;
-  // alert(selectedValue);
-}
-
-function filterQ(selected_Q) {
-  //jQuery("#posturl").load("/posts?question_id=" + selected_Q, function() {
-   // alert("Load was performed");
-  //});
-  jQuery.ajax({
-    data: JSON.stringify('id=' + selected_Q),
-    dataType: 'script',
-    type: 'GET',
-    url: '//localhost:3000/posts?question_id=' + selected_Q
-  });
-}
 </script>
 <input type="hidden" id="refreshed" value="no">
 
@@ -44,12 +27,22 @@ function filterQ(selected_Q) {
   </script>
 <% end %>
 </div>
-<div id="posturl" style="width: 100%; height: 100px; background-color:white;">
+<div id="posturl" class="panel panel-default" style="width: 100%; background-color:white;">
   <h5>Filter the Markers by Question</h5>
   <%= form_tag(posts_path, :method => 'get', id: "search-form") do %>
     <%= select_tag(:search, options_for_select(@question_options)) %>
-    <%= submit_tag "Filter", :name => nil %>
+    <%= submit_tag "Submit", :name => nil, class: "btn btn-primary btn-xs" %>
   <% end %>
+  <%= link_to 'Clear Filter', root_path %><br />
+  <% if current_page?('/') and @postTitle.nil? %>
+    
+  <% elsif @postTitle.nil? %>
+    <h5>Oops, there are no posts with the question you chose.  Create one!</h5>
+  <% else %>
+    <h5>Selected: <%= @postTitle.question.description %></h5>
+  <% end %>
+</div>
+<div>
 </div>
 <div id="search-form" class="posts transitions-enabled">
   <% @postFilt.each do |post| %>
@@ -58,7 +51,7 @@ function filterQ(selected_Q) {
       <div class="panel-body">    
         <strong><%= post.question.description %></strong><br />
         <%= post.description.truncate(53) %><br />
-        <strong><%= post.user.user_name if post.user %></strong>
+        <strong><%= post.user.user_name if post.user %></strong><br />
         <% if current_user && post.user == current_user %>
           <div class="actions">
             <%= link_to edit_post_path(post) do %>

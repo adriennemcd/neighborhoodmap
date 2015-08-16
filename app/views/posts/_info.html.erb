@@ -1,4 +1,4 @@
-<h5><%= post.image %></h5> 
-<p><%= post.question.description %></p>
-<p><%= post.description %></p>
-<p><%= post.id %></p>
+<p><strong><%= post.question.description %></strong></p>
+<p><%= post.description.truncate(80) %></p>
+<p><%= post.user.user_name %></p>
+<%= link_to "Details", post_path(post) %> 

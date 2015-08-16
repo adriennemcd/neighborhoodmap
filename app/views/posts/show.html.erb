@@ -17,13 +17,11 @@ function startMap() {
 }
 
 </script>
-<%= link_to 'Back', posts_path %>
-
 <div id="onePost" class="row">
 	<div class="col-md-offset-2 col-md-8">
 		<div class="panel panel-default">
 			<div class="panel-heading center">
-				<%= image_tag @post.image.url(:large) %>
+				<%= image_tag @post.image.url(:large), class: "img-responsive" %>
 			</div>
 			<div class="show panel-body">
 				<p><strong><%= @post.question.description %></strong></p>
