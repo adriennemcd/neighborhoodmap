@@ -1,5 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :set_question, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:index, :new, :create, :edit, :update, :destroy, :show]
+  before_action :amcd_user, only: [:index, :new, :create, :edit, :update, :destroy, :show]
 
   # GET /questions
   # GET /questions.json
@@ -65,6 +67,11 @@ class QuestionsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_question
       @question = Question.find(params[:id])
+    end
+
+    def amcd_user
+      @question = current_user.questions.find_by(id: 1)
+      redirect_to root_path, notice: "Not authorized to edit questions" if @question.nil?
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
