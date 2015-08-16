@@ -8,4 +8,6 @@ class User < ActiveRecord::Base
   has_many :questions, :through => :posts, dependent: :destroy
 
   validates :user_name, presence: true, uniqueness: { case_sensitive: false }, length: { in: 3..20 }
+  validates :neighborhood, presence: true
+  validates :year, presence: true, length: { is: 4 }
 end
