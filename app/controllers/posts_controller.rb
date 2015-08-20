@@ -14,11 +14,9 @@ class PostsController < ApplicationController
         marker.lng post.longitude
         marker.infowindow render_to_string(:partial => "info", :locals => { :post => post })
         marker.json({
-        title:     post.title,
         question: post.question.description,
         description: post.description,
-        image: post.image.url(:thumb),
-        id: post.id
+        user: post.user.user_name
         })
       end
     else
@@ -28,11 +26,10 @@ class PostsController < ApplicationController
         marker.lng post.longitude
         marker.infowindow render_to_string(:partial => "info", :locals => { :post => post })
         marker.json({
-        title:     post.title,
         question: post.question.description,
         description: post.description,
-        image: post.image.url(:thumb),
-        id: post.id
+        user: post.user.user_name,
+        date: post.created_at.strftime("%Y/%m/%d")
         })
       end
     end

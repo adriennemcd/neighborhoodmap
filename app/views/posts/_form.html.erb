@@ -65,7 +65,7 @@
 
         centerControlDiv.index = 1;
         map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
-    }
+    } 
 
     function stopEdit() {
         google.maps.event.clearListeners(map, "click");
@@ -116,7 +116,7 @@
       controlText.innerHTML = 'Remove marker & try again';
       controlUI.appendChild(controlText);
 
-      // Setup the click event listeners: simply set the map to Chicago.
+      // Setup the click event listeners
       controlUI.addEventListener('click', function() {
         tryAgain();
       });

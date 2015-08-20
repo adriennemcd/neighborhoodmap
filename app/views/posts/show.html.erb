@@ -27,6 +27,7 @@ function startMap() {
 				<p><strong><%= @post.question.description %></strong></p>
 				<p><%= @post.description %></p>
 				<p><strong><%= @post.user.user_name if @post.user %></strong></p>
+				<p style="font-size: 90%;"><%= @post.created_at.strftime("%d %B %Y") %></p>
 				<input type="button" class="btn btn-primary btn-xs" style="margin-bottom: 5px;" value="Show on map" onclick="startMap()">
 				<div class="center" style='width: 100%; background-color: white; margin: 0 auto;'>
 					<div id="mapShow" style='width: 100%; height: 400px; display: none;'></div>
